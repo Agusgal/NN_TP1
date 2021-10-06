@@ -1,0 +1,78 @@
+## Importar Librerias
+## Cargar los datos
+
+Podemos observar que las hipotesis estan en texto y las clases o juicios en gold_label. Se utilizará lo que llamamos df_valid para observar las distintas metricas de validacion y poder luego comparar entre los modelos de Multinomial Naive Bayes (NBMN) y MLP. De esta forma, se busca observar si ambos modelos logran predecir el gold_label solamente a traves de las hipotesis. En el caso que asi sea, se podria establecer que el armado de datos posee sesgos. 
+
+El dataset completo que busca establecer una relacion de inferencia entre la hipotesis y el texto total por lo que si existe un sesgo entre las hipotesis y los juicios (gold_label) no seria correcto utilizar este dataset para validacion de metodos. 
+
+
+## Pre-Procesamiento de texto
+
+Para realizar este preprocesamiento utilizamos la funcion data_filter() en donde se encuentran las siguientes operaciones:
+
+
+se hace este procedimiento para todos los df. Ya que luego es necesario utilizar los distintos df para validar el metodo y testearlo.
+
+... aca ya escribimos que poner en relacion al NLTK, 
+
+A partir de los textos obtenidos en el preprocesamiento por NLTK se procede a armar los CV para los diferentes df. Una vez realizado el CountVectorizer se aplican los distintos metodos con librerias. 
+
+## Metodo de NBMN 
+....
+
+1. Se establece el alpha a utilizar. 
+2. Se modela el metodo
+3. Se observan los coeficientes que utliza
+4. Se predicen las clases de df_valid
+5. Se comparan las clases predecidas con las clases con las que viene estiquetado a partir de las siguientes metricas:
+	5.a. Matriz de confusion
+	5.b. Accurancy....
+6. Se sacan conclusiones. 
+
+
+### Metricas
+Las metricas de evaluacion que se utilizan para evaluar un metodo de clasificacion y ademas comparar varios metodos de clasificacion aplicados a un mismo conjunto de datos. Tambien se puede evaluar el comportamiento dado por un cambio de parametros en un metodo. 
+La evaluacion del modelo se hace a partir de los datos que se encuentran en test, siendo clasidicacion supervisada. 
+Hay que considerar los distintos tipos de datos para las metricas de evaluacion: 
+
+	* Verdaderos positivos: El valor real es positivo y  la prueba predijo tambien que era positivo.
+	* Verdaderos Negativos: El valor real  es negativo y la prueba predijo tambien que el resultado era negativo.
+	* Falsos positivos: El valor real es negativo, y la prueba predijo  que el resultado es positivo. 
+	* Falsos negativos: El valor real es positivo, y la prueba predijo  que el resultado es negativo. 
+
+Se utilizaron metricas para la evaluacion del rendimiento, siendo estas:
+	* precision
+	* recall_score
+	* f1_score
+	* ROC AUG
+Ninguno de estos criterios por separado da una buena evaluacion de un metodo de clasificacion y hay que utilizar varios criterios al mismo tiempo.
+
+La curva ROC es el grafico de la tasa de verdaderos positivos contra la tasa de falsos positivos. Luego es posible analizar el error en la clasificacion midiendo el area debajo de la curva. Cuanto mas cerca de 1 este el area, mejor sera la clasificacion. El area debajo de la curva ROC o AUG es una metrica que puede ser
+utilizada para comparar diferentes test de clasificacion. Es una medida de la precision del test. Se calcula con un metodo de integracion numerica.
+
+Se calcularon todas pero a la hora de pensar en la robustez de un metodo hay que tener en cuenta las ventajas y las desventajas que tiene cada uno de las metricas. 
+Con la métrica de precisión podemos medir la calidad del modelo de machine learning en tareas de clasificación. Se refiere a la dispersión del conjunto de valores obtenidos a partir de mediciones repetidas de una magnitud. Cuanto menor es la dispersión mayor la precisión. Se representa por la proporción de verdaderos positivos dividido entre todos los resultados positivos (tanto verdaderos positivos, como falsos positivos).
+precision = \frac{TP}{TP + FP}
+
+La métrica de exhaustividad nos va a informar sobre la cantidad que el modelo de machine learning es capaz de identificar. Es tambien llamada tasa de verdaderos positivos es la probabilidad de que un resultado positivo real dé positivo.
+recall = \frac{TP}{TP + FN}
+
+El valor F1 se utiliza para combinar las medidas de precision y recall en un sólo valor. Esto es práctico porque hace más fácil el poder comparar el rendimiento combinado de la precisión y la exhaustividad entre varias soluciones. Es de gran utilidad cuando la distribución de las clases es desigual.
+F1 = 2 \cdot \frac{precision \cdot recall}{precision + recall} 
+
+Hay otra metrica llamada *accuracy* que mide el porcentaje de casos que el modelo ha acertado. Esta no funciona bien cuando las clases están desbalanceadas. En este caso se pudo ver que las clases estaban bien balanceadas por lo que se opto la misma como metrica primaria. Si no hubiese sido asi, es decir las clases desbalanceadas, es mucho mejor usar precision, recall y F1. Estas métricas dan una mejor idea de la calidad del modelo.
+accuracy = \frac{TP + TN}{TP + TN + FP + FN}
+
+El sesgo es la diferencia entre el valor medio y el verdadero valor de la magnitud medida. El sesgo pertenece al concepto de exactitud.
+
+Conforme a las metricas mencionadas podemos obtener cuatro casos posibles para cada clase:
+
+* **Alta precisión y alto recall:** el modelo de Machine Learning escogido maneja perfectamente esa clase.
+* **Alta precisión y bajo recall:** el modelo de Machine Learning escogido no detecta la clase muy bien, pero cuando lo hace es altamente confiable.
+* **Baja precisión y alto recall:** El modelo de Machine Learning escogido detecta bien la clase,  pero también incluye muestras de la otra clase.
+* **Baja precisión y bajo recall:** El modelo de Machine Learning escogido no logra clasificar la clase correctamente.
+
+Para un *dataset* desequilibrado se puede caer en la obtencion de un alto valor de precisión en la clase Mayoritaria y un bajo recall en la clase Minoritaria. 
+
+
+
